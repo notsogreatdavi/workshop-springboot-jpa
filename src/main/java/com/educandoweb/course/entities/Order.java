@@ -2,6 +2,7 @@ package com.educandoweb.course.entities;
 
 import com.educandoweb.course.entities.enums.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonFormatTypes;
 import jakarta.persistence.*;
 
@@ -31,11 +32,12 @@ public class Order implements Serializable {
     @JoinColumn(name = "client_id")
     private User client;
 
+
     @OneToMany(mappedBy = "id.order")
     private Set<OrderItem> items = new HashSet<>();
 
-    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
 
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
     private Payment payment;
 
     public Order() {
@@ -91,8 +93,17 @@ public class Order implements Serializable {
         this.payment = payment;
     }
 
+
     public Set<OrderItem> getItems(){
         return items;
+    }
+
+    public Double getTotal() {
+        double sum = 0.0;
+        for (OrderItem x : items) {
+            sum += x.getSubTotal();
+        }
+        return sum;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.educandoweb.course.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.io.Serial;
@@ -17,6 +18,7 @@ public class Payment implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Instant moment;
+
 
     @OneToOne
     @MapsId
@@ -47,6 +49,7 @@ public class Payment implements Serializable {
     public void setMoment(Instant moment) {
         this.moment = moment;
     }
+
 
     public Order getOrder() {
         return order;
